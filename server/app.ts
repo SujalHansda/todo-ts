@@ -12,7 +12,10 @@ const s: any = Yaml.load(fs.readFileSync(`${__dirname}/swagger.yaml`, "utf-8"))
 
 const app: Express = express()
 
-const PORT: string | number = process.env.PORT || 4000
+// const PORT: string | number = process.env.PORT || 4000
+const PORT = 4000
+
+// const DOCKER_PORT = 5000
 app.use(cors({ origin: '*' }));
 app.use(express.json())
 app.use(todoRoutes)
@@ -26,7 +29,8 @@ mongoose
   .connect(url)
   .then(() =>
     app.listen(PORT, () =>
-      console.log(`==> Server running on http://localhost:${PORT} | MongoDb connected <==`)
+      console.log(`==> Server running on http://localhost:${PORT} | MongoDb connected <== \n
+      ** For Swagger UI: http://localhost:${PORT}/api-docs  **`)
     )
   )
   .catch(error => {
