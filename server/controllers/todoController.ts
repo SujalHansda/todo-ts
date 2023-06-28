@@ -14,7 +14,7 @@ const getAllTodos = async (req: Request, res: Response): Promise<void> => {
 const getTodos = async (req: Request, res: Response): Promise<void> => {
     try {
         const newTodo: ITodo | null = await Todo.findById(req.params.id)
-        res.status(200).json({ message: "Todo added", todo: newTodo })
+        res.status(200).json({ todo: newTodo })
     } catch (error) {
         throw error
     }
@@ -24,7 +24,7 @@ const getTodoByTitle = async (req: Request, res: Response): Promise<void> => {
     try {
         const query = { title: req.query.title };
         const newTodo: ITodo | null = await Todo.findOne(query)
-        res.status(200).json({ message: "Todo added", todo: newTodo })
+        res.status(200).json({todo: newTodo })
     } catch (error) {
         throw error
     }
@@ -35,7 +35,7 @@ const addTodo = async (req: Request, res: Response): Promise<void> => {
         //Creating a new type that only includes the title, description, and status properties from ITodo
         //and asserting the type of req.body to that type
         const body = req.body as Pick<ITodo, "title" | "description" | "status">
-
+        if(body.status === undefined) body.status = true;
         const todo: ITodo = new Todo({
             title: body.title,
             description: body.description,
@@ -65,7 +65,6 @@ const updateTodo = async (req: Request, res: Response): Promise<void> => {
         const allTodos: ITodo[] = await Todo.find()
         res.status(200).json({
             message: "Todo updated",
-            todo: updateTodo,
             todos: allTodos,
         })
     } catch (error) {
@@ -81,7 +80,6 @@ const deleteTodo = async (req: Request, res: Response): Promise<void> => {
         const allTodos: ITodo[] = await Todo.find()
         res.status(200).json({
             message: "Todo deleted",
-            deletedTodo: deletedTodo,
             todos: allTodos,
         })
     } catch (error) {

@@ -1,6 +1,6 @@
 {
     "watch": ["server"],
-    "ext": ".ts",
+    "ext": ".ts, .yaml, .json",
     "exec": "ts-node ./server/app.ts"
   }
   

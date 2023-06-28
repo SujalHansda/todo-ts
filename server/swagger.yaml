@@ -1,0 +1,239 @@
+openapi: 3.0.3
+info:
+  title: Todo - OpenAPI 3.0
+  description: This is Todo API swagger documentation
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://localhost:4000
+tags:
+  - name: Todo
+    description: Everything about your Pets
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+paths:
+  /todos:
+    get:
+      tags:
+        - Todo
+      summary: Get all todos
+      responses:
+        '200':
+          description: Todos fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todos'
+        '400':
+          description: error
+  /todo:
+    get:
+      tags:
+        - Todo
+      summary: Get todo by title
+      parameters:
+        - name: title
+          in: query
+          description: Todo title
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Fetched todo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '400':
+          description: Error
+  /todo/{todoId}:
+    get:
+      tags:
+        - Todo
+      summary: Get todo by id
+      parameters:
+        - name: todoId
+          in: path
+          description: Todo Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Todo fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '400':
+          description: Error
+  /add-todo:
+    post:
+      tags:
+        - Todo
+      summary: Add new Todo
+      requestBody:
+        description: Todo JSON Object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddTodo'
+        required: true
+      responses:
+        '200':
+          description: Todo Added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodosMessage'
+        '405':
+          description: Error
+  /edit-todo/{todoId}:
+    put:
+      tags:
+        - Todo
+      summary: Edit todo by todoId
+      parameters:
+        - name: todoId
+          in: path
+          description: Todo Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Updated Todo JSON Object
+        content:
+          application/json:
+              schema:
+                $ref: '#/components/schemas/AddTodo'
+      responses:
+        '200':
+          description: Todo updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodosMessage'
+        '400':
+          description: Error
+  /delete-todo/{todoId}:
+    delete:
+      tags:
+        - Todo
+      summary: Delete todo by id
+      parameters:
+        - name: todoId
+          in: path
+          description: todo Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Todo deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodosMessage'
+        '400':
+          description: Error
+  /delete-all-todos:
+    delete:
+      tags:
+        - Todo
+      summary: delete All todos
+      responses:
+        '200':
+          description: Todo fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodosMessage'
+        '400':
+          description: Error
+components:
+  schemas:
+    Todo:
+      type: object
+      properties:
+        todo:
+          type: object
+          properties:
+            _id:
+              type: string
+            title:
+              type: string
+            description:
+              type: string
+            status:
+              type: boolean
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+    Todos:
+      type: object
+      properties:
+        todos:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              title:
+                type: string
+              description:
+                type: string
+              status:
+                type: boolean
+              createdAt:
+                type: string
+                format: date-time
+              updatedAt:
+                type: string
+                format: date-time
+    TodosMessage:
+      type: object
+      properties:
+        message:
+          type: string
+        todos:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              title:
+                type: string
+              description:
+                type: string
+              status:
+                type: boolean
+              createdAt:
+                type: string
+                format: date-time
+              updatedAt:
+                type: string
+                format: date-time
+    AddTodo:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: boolean
